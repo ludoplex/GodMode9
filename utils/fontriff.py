@@ -45,7 +45,7 @@ with open(args.input, "rb") as f:
     mapPath = args.map
     if not mapPath and path.exists(args.input[:args.input.rfind(".")] + ".txt"):
         mapPath = args.input[:args.input.rfind(".")] + ".txt"
-        print("Info: Using %s for font mappings" % mapPath)
+        print(f"Info: Using {mapPath} for font mappings")
     if mapPath:
         with open(mapPath, "r") as fontMapFile:
             fontMapTemp = fontMapFile.read().split()
@@ -56,13 +56,10 @@ with open(args.input, "rb") as f:
                 count = len(fontMapTemp)
                 print("Info: Font map has fewer items than possible in image, only using first %d" % count)
 
-            for item in fontMapTemp:
-                fontMap.append({"mapping": int(item, 16)})
+            fontMap.extend({"mapping": int(item, 16)} for item in fontMapTemp)
     else:
         print("Warning: Font mapping not found, mapping directly to Unicode codepoints")
-        for i in range(count):
-            fontMap.append({"mapping": i})
-
+        fontMap.extend({"mapping": i} for i in range(count))
     # add unsorted tiles to map
     for c in range(count):
         fontMap[c]["bitmap"] = []

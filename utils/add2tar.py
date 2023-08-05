@@ -50,7 +50,7 @@ def tarpack(*, items, out, size_limit=0, path_limit=0, make_new=False):
             elif os.path.isfile(i):
                 addtotar(i, os.path.basename(i))
             else:
-                raise FileNotFoundError("couldn't find " + i)
+                raise FileNotFoundError(f"couldn't find {i}")
 
         # tarfile is adding more end blocks when it only needs two
         tar.fileobj.seek(0, 2)
